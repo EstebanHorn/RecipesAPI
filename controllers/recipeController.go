@@ -37,7 +37,6 @@ func GetRecipe(w http.ResponseWriter, r *http.Request) {
 	id := mux.Vars(r)["id"]
 
 	// Mostrar el ID en los logs para verificación
-	fmt.Println("ID: ", id)
 
 	recipe, err := services.GetRecipe(id)
 	if err != nil {
@@ -59,10 +58,34 @@ func GetRecipes(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(recipes)
 }
 
-func UpdateRecipe() {
-	// Update a recipe
+func UpdateRecipe(w http.ResponseWriter, r *http.Request) {
+	var recipe models.Recipe
+	if err := json.NewDecoder(r.Body).Decode(&recipe); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	id := mux.Vars(r)["id"]
+
+	if err := services.UpdateRecipe(id, recipe); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	json.NewEncoder(w).Encode(recipe)
 }
 
-func DeleteRecipe() {
-	// Delete a recipe
+func DeleteRecipe(w http.ResponseWriter, r *http.Request) {
+	id := mux.Vars(r)["id"]
+
+
+	if err := services.DeleteRecipe(id); err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.WriteHeader(http.StatusNoContent)
+	json.NewEncoder(w).Encode(fmt.Sprintf("Recipe with ID %s was deleted", id))
+	
 }

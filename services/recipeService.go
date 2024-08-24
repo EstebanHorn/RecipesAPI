@@ -23,6 +23,11 @@ func init() () {
 
 
 func CreateRecipe(recipe models.Recipe) error {
+	
+	if recipe.ID.IsZero() {
+		recipe.ID = primitive.NewObjectID()
+	}
+
 	_, err := collection.InsertOne(context.TODO(), recipe)
 	if err != nil {
 		return err
@@ -46,7 +51,6 @@ func GetRecipe(id string) (models.Recipe, error) {
 
 	return recipe, nil
 }
-
 func GetRecipes() ([]models.Recipe, error) {
 	var recipes []models.Recipe
 	cursor, err := collection.Find(context.TODO(), bson.M{})
@@ -54,6 +58,7 @@ func GetRecipes() ([]models.Recipe, error) {
 		return nil, err
 	}
 	defer cursor.Close(context.TODO())
+
 	for cursor.Next(context.TODO()) {
 		var recipe models.Recipe
 		if err := cursor.Decode(&recipe); err != nil {
@@ -66,4 +71,34 @@ func GetRecipes() ([]models.Recipe, error) {
 		return nil, err
 	}
 	return recipes, nil
+}
+
+
+func UpdateRecipe(id string, recipe models.Recipe) error {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+
+	_, err = collection.UpdateOne(context.TODO(), bson.M{"_id": objectID}, bson.M{"$set": recipe})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func DeleteRecipe(id string) error {
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return err
+	}
+
+	_, err = collection.DeleteOne(context.TODO(), bson.M{"_id": objectID})
+
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

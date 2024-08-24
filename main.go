@@ -2,23 +2,17 @@ package main
 
 import (
 	"fmt"
-	"github.com/EstebanHorn/RecipesAPI/database"
+	//"github.com/EstebanHorn/RecipesAPI/database"
 	"github.com/EstebanHorn/RecipesAPI/routes"
 	"net/http"
 	"github.com/gorilla/mux"
 	"log"
-	"context"
+	//"context"
 )
 
 func main() {
 	fmt.Println("Recipes api")
 
-	client , err := database.Connect()
-	if err != nil {
-		panic(err)
-	}
-
-	defer client.Disconnect(context.TODO())
 
 	r := mux.NewRouter()
 	routes.ConfigRoutes(r)
