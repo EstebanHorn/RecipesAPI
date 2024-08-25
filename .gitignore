@@ -1,0 +1,28 @@
+# Ignora archivos de entorno
+.env
+
+# Ignora los directorios de módulos y dependencias de Go
+/bin/
+/pkg/
+/vendor/
+
+# Ignora archivos de compilación
+*.exe
+*.out
+*.log
+
+# Ignora archivos de configuración del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignora archivos temporales y de respaldo
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+
+# Ignora archivos específicos del IDE o editor
+.idea/
+.vscode/
+*.iml
