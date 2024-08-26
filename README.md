@@ -12,7 +12,6 @@ This is a RESTful API for managing recipes, allowing users to create, retrieve, 
 - [Configuration](#configuration)
 - [Usage](#usage)
 - [API Endpoints](#api-endpoints)
-- [License](#license)
 
 ## Features
 
